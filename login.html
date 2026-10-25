@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Sign In | Signature Look</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    body {
+      background-color: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .login-page-container {
+      flex: 1 0 auto;
+      padding: 60px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-card {
+      max-width: 440px;
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 40px 32px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .login-title {
+      font-family: var(--font-serif);
+      font-size: 2.1rem;
+      color: var(--color-primary);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .login-subtitle {
+      font-size: 0.84rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-main);
+    }
+
+    .form-control {
+      padding: 12px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(18, 34, 27, 0.08);
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      background-color: var(--color-primary);
+      color: #FFFFFF;
+      padding: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background-color 0.25s ease, transform 0.15s ease;
+    }
+
+    .login-submit-btn:hover {
+      background-color: var(--color-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .login-submit-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-footer-links {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.84rem;
+      color: var(--color-text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .login-footer-links a {
+      color: var(--color-accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast-status {
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .toast-status.success {
+      background-color: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #A5D6A7;
+    }
+
+    .toast-status.error {
+      background-color: #FFEBEE;
+      color: #C62828;
+      border: 1px solid #EF9A9A;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Boutique Header -->
+  <div id="header-container"></div>
+
+  <!-- Sign In Content -->
+  <main class="login-page-container">
+    <div class="login-card">
+      <div class="login-header">
+        <span class="login-kicker">Welcome Back</span>
+        <h1 class="login-title">Sign In</h1>
+        <p class="login-subtitle">Access your account to manage orders, fast-track checkout, and view curated edits.</p>
+      </div>
+
+      <div id="toast-message" class="toast-status"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-identifier">Mobile Number or Email *</label>
+          <input 
+            type="text" 
+            id="login-identifier" 
+            class="form-control" 
+            placeholder="10-digit phone or email" 
+            required 
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password *</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            class="form-control" 
+            placeholder="Enter your password" 
+            required 
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="login-submit-btn" id="login-btn">
+          Sign In To Boutique
+        </button>
+      </form>
+
+      <div class="login-footer-links">
+        <span>Don't have an account? <a href="register.html">Create Account Here</a></span>
+        <a href="index.html" style="font-size: 0.78rem; text-decoration: none;">← Return to Storefront</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Shared Boutique Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/header.js"></script>
+  <script src="js/footer.js"></script>
+
+  <script>
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXt-5t6qmCF1d8CN-EIBgBZ6_HTJdgRKAnpOVkra8CuHicjq5gS-DQ1WT-_dEYE1Ui/exec';
+
+    const loginForm = document.getElementById('login-form');
+    const loginBtn = document.getElementById('login-btn');
+    const toast = document.getElementById('toast-message');
+
+    function showToast(msg, isSuccess = true) {
+      toast.textContent = msg;
+      toast.className = 'toast-status ' + (isSuccess ? 'success' : 'error');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 5000);
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const identifier = document.getElementById('login-identifier').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Verifying Account...';
+
+      const payload = {
+        action: 'login_customer',
+        identifier: identifier,
+        password: password
+      };
+
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
+          showToast('Sign in successful! Redirecting...', true);
+          
+          if (result.customer) {
+            localStorage.setItem('signature_customer', JSON.stringify(result.customer));
+          }
+
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1200);
+
+        } else {
+          showToast(result.message || 'Invalid mobile/email or password.', false);
+        }
+      } catch (err) {
+        showToast('Network error: ' + err.message, false);
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Sign In To Boutique';
+      }
+    });
+  </script>
+</body>
+</html>
