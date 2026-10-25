@@ -42,23 +42,69 @@
     if (!heroContainer) return;
 
     heroContainer.innerHTML = `
-      <div class="hero-banner-inner">
-        <div class="hero-content-wrap container">
-          <div class="hero-text-card">
-            <span class="hero-kicker">Signature Look Originals</span>
-            <h1 class="hero-title">Timeless Grace, <br/>Modern Silhouette</h1>
-            <p class="hero-desc">Discover our handpicked couture — crafted with pure silks, delicate embroideries, and refined tailoring.</p>
-            <div class="hero-cta-group">
-              <a href="#featured-products-container" class="hero-primary-btn">
-                <span>Explore Bestsellers</span>
-                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="hero-banner-wrapper">
+        <div class="container hero-layout-grid">
+          
+          <!-- Left Editorial Column -->
+          <div class="hero-text-col">
+            <div class="hero-brand-pill">
+              <span class="pill-sparkle">✦</span>
+              <span>Handcrafted Heritage • SS/26</span>
+            </div>
+            
+            <h1 class="hero-editorial-title">
+              Timeless Grace,<br/>
+              <em>Modern Silhouette</em>
+            </h1>
+            
+            <p class="hero-editorial-desc">
+              Discover our artisanal curations — pure Chanderi silks, hand-detailed farshi ghararas, and contemporary co-ords tailored for modern elegance.
+            </p>
+
+            <div class="hero-action-buttons">
+              <a href="#featured-products-container" class="hero-btn-primary">
+                <span>Explore Creations</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <line x1="5" y1="12" x2="19" y2="12"></line>
                   <polyline points="12 5 19 12 12 19"></polyline>
                 </svg>
               </a>
-              <span class="hero-meta-badge">Free Pan-India Delivery Available</span>
+              <a href="#collections-container" class="hero-btn-secondary">
+                <span>View Collections</span>
+              </a>
+            </div>
+
+            <div class="hero-trust-strip">
+              <div class="trust-badge-item">
+                <span class="trust-icon">✓</span>
+                <span>Pure Fabrics</span>
+              </div>
+              <div class="trust-badge-item">
+                <span class="trust-icon">✓</span>
+                <span>Custom Sizing</span>
+              </div>
+              <div class="trust-badge-item">
+                <span class="trust-icon">✓</span>
+                <span>Pan-India Delivery</span>
+              </div>
             </div>
           </div>
+
+          <!-- Right Showcase Frame -->
+          <div class="hero-visual-col">
+            <div class="hero-arch-frame">
+              <img 
+                src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=85" 
+                alt="Signature Look Luxury Couture" 
+                class="hero-arch-image" 
+              />
+              <div class="hero-glass-floating-card">
+                <span class="floating-tag">Artisanal Couture</span>
+                <span class="floating-sub">Boutique Collection</span>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     `;
@@ -186,6 +232,9 @@
       if (json && json.status === 'success' && Array.isArray(json.data) && json.data.length > 0) {
         PRODUCTS_DATA = json.data;
         renderProducts(currentActiveCategory);
+		if (typeof window.syncDynamicCollections === 'function') {
+          window.syncDynamicCollections(PRODUCTS_DATA);
+        }
       }
     } catch (err) {
       console.warn('[home.js] Could not fetch live Google Sheet data, showing fallback items:', err);
