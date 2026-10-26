@@ -1,250 +1,155 @@
 /**
- * Signature Look - Header Module
- * Features:
- * - Top-left Brand Logo placement ("Signature Look" | "Look Smart, Everyday..")
- * - Dynamic injection of Announcement Bar, Main Navbar & Mobile Drawer
- * - Mobile slide-out drawer with body scroll locking
- * - Sticky Glassmorphism transition on scroll
- * - Event-driven Cart counter and Drawer trigger
+ * Signature Look - Global Header Engine with Amazon-Style Customer Ribbon
+ * Path: js/header.js
  */
 
-(function () {
-  'use strict';
+(function initSignatureHeader() {
+  const container = document.getElementById('header-container');
+  if (!container) return;
 
-  // Navigation Links Configuration
-  const NAV_LINKS = [
-    { title: 'Home', href: 'index.html', badge: '' },
-    { title: 'Suit Sets', href: '#suit-sets', badge: '' },
-    { title: 'Farshi Gharara', href: '#farshi', badge: 'Popular' },
-    { title: 'Co-ord Sets', href: '#coord-sets', badge: '' },
-    { title: 'Velvet Edit', href: '#velvet', badge: 'New' },
-    { title: 'Sale', href: '#sale', badge: 'Up to 40% Off' }
-  ];
+  // 1. Session Check (localStorage)
+  let customer = null;
+  try {
+    customer = JSON.parse(localStorage.getItem('signature_customer'));
+  } catch (e) {
+    customer = null;
+  }
 
-  // Store Meta & Branding Configuration
-  const STORE_META = {
-    brandName: 'Signature Look',
-    brandTagline: 'Look Smart, Everyday..',
-    announcement: '✨ Flat 10% Off on First Order | Code: FIRST10 | Free Pan-India Delivery ✨',
-    supportNumber: '+91 98765 43210'
-  };
+  const isUserLoggedIn = !!(customer && (customer.fullName || customer.phone));
+  const displayName = isUserLoggedIn ? (customer.fullName || 'Valued Client') : 'Guest';
+  const displayCity = isUserLoggedIn ? (customer.delivery_address || 'Shahjahanpur') : 'Shahjahanpur';
 
-  /**
-   * Generates HTML template for the entire header suite with Top-Left logo
-   */
-  function createHeaderTemplate() {
-    const navItemsDesktop = NAV_LINKS.map(link => `
-      <li class="nav-item">
-        <a href="${link.href}" class="nav-link">
-          ${link.title}
-          ${link.badge ? `<span class="nav-badge">${link.badge}</span>` : ''}
+  // 2. Render Amazon Ribbon + Main Navigation Bar
+  container.innerHTML = `
+    <!-- Top Amazon-Style Customer Ribbon -->
+    <div class="sig-amazon-ribbon" style="
+      background: linear-gradient(90deg, #07100B 0%, #13271D 50%, #07100B 100%);
+      border-bottom: 1.5px solid #C5A880;
+      color: #FAF8F5;
+      font-size: 0.8rem;
+      padding: 7px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    ">
+      <div style="max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        
+        <!-- Location / Greeting Block -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="color: #ECC880; display: flex; align-items: center;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+          </span>
+          <div style="line-height: 1.2;">
+            <span style="font-size: 0.68rem; color: #C5A880; text-transform: uppercase; letter-spacing: 0.08em; display: block;">
+              ${isUserLoggedIn ? 'Deliver to ' + displayCity : 'Boutique Access'}
+            </span>
+            <span style="font-weight: 700; color: #FFFFFF; font-size: 0.86rem;">
+              ${isUserLoggedIn ? 'Welcome!!, ' + displayName : 'Welcome, Guest'}
+            </span>
+          </div>
+        </div>
+
+        <!-- Auth Action Trigger -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+          ${isUserLoggedIn ? `
+            <span style="color: #ECC880; font-size: 0.72rem; letter-spacing: 0.08em; font-weight: 700; text-transform: uppercase;">VIP Member ✦</span>
+            <button id="sig-logout-btn" style="
+              background: none;
+              border: 1px solid rgba(197, 168, 128, 0.4);
+              color: #FAF8F5;
+              padding: 4px 10px;
+              border-radius: 4px;
+              font-size: 0.74rem;
+              cursor: pointer;
+              font-weight: 600;
+              transition: all 0.2s;
+            ">Sign Out</button>
+          ` : `
+            <a href="auth.html" style="
+              background: linear-gradient(135deg, #ECC880, #C5A880);
+              color: #08110D;
+              padding: 4px 12px;
+              border-radius: 4px;
+              text-decoration: none;
+              font-size: 0.75rem;
+              font-weight: 800;
+              letter-spacing: 0.04em;
+              display: inline-flex;
+              align-items: center;
+              gap: 4px;
+            ">Sign In ➔</a>
+            <a href="register.html" style="
+              color: #ECC880;
+              text-decoration: underline;
+              font-size: 0.75rem;
+              font-weight: 600;
+            ">Register</a>
+          `}
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Main Luxury Navbar -->
+    <header class="boutique-navbar" style="
+      background: rgba(250, 248, 245, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(197, 168, 128, 0.35);
+      padding: 14px 20px;
+    ">
+      <div style="max-width: 1240px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+        
+        <!-- Brand Logo -->
+        <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 1.3rem;">✨</span>
+          <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; font-weight: 800; color: #12221B; letter-spacing: 0.04em;">
+            Signature Look
+          </span>
         </a>
-      </li>
-    `).join('');
 
-    const navItemsMobile = NAV_LINKS.map(link => `
-      <li class="drawer-nav-item">
-        <a href="${link.href}" class="drawer-nav-link">
-          <span>${link.title}</span>
-          ${link.badge ? `<span class="drawer-badge">${link.badge}</span>` : ''}
-        </a>
-      </li>
-    `).join('');
-
-    return `
-      <!-- Top Announcement Bar -->
-      <aside class="announcement-bar" role="region" aria-label="Announcement">
-        <div class="announcement-content">
-          <span>${STORE_META.announcement}</span>
+        <!-- Right Quick Actions -->
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <a href="index.html" style="text-decoration: none; color: #12221B; font-size: 0.88rem; font-weight: 600;">Store</a>
+          <button id="cart-drawer-toggle" style="
+            background: #12221B;
+            color: #FFFFFF;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          ">
+            <span>Bag</span>
+            <span id="cart-count-badge" style="background: #C5A880; color: #12221B; padding: 2px 6px; border-radius: 10px; font-size: 0.72rem; font-weight: 800;">0</span>
+          </button>
         </div>
-      </aside>
 
-      <!-- Main Sticky Navigation Bar -->
-      <header class="main-header" id="site-main-header">
-        <div class="header-inner container">
-          
-          <!-- Top-Left Branding & Mobile Trigger Section -->
-          <div class="header-left">
-            <button class="icon-btn mobile-only" id="mobile-menu-toggle" aria-label="Open mobile menu" aria-expanded="false">
-              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
+      </div>
+    </header>
+  `;
 
-            <!-- Brand Logo (Placed at Top-Left) -->
-            <div class="brand-logo-wrap">
-              <a href="index.html" class="brand-logo" aria-label="${STORE_META.brandName} Home">
-                <span class="brand-title">${STORE_META.brandName}</span>
-                <span class="brand-subtitle">${STORE_META.brandTagline}</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Center: Desktop Navigation -->
-          <nav class="desktop-navigation desktop-only" aria-label="Primary Navigation">
-            <ul class="nav-list">
-              ${navItemsDesktop}
-            </ul>
-          </nav>
-
-          <!-- Right: Action Utilities -->
-          <div class="header-right action-tools">
-            <button class="icon-btn search-trigger" id="site-search-btn" aria-label="Search collection">
-              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </button>
-
-            <button class="icon-btn cart-trigger" id="header-cart-btn" aria-label="View shopping bag">
-              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span class="cart-counter-badge" id="header-cart-count">0</span>
-            </button>
-          </div>
-
-        </div>
-      </header>
-
-      <!-- Mobile Drawer Backdrop Overlay -->
-      <div class="drawer-overlay" id="mobile-drawer-overlay" aria-hidden="true"></div>
-
-      <!-- Off-Canvas Mobile Drawer -->
-      <aside class="mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Mobile Navigation">
-        <div class="drawer-container">
-          
-          <div class="drawer-header">
-            <div class="drawer-brand">
-              <span class="drawer-brand-title">${STORE_META.brandName}</span>
-              <span class="drawer-brand-tagline">${STORE_META.brandTagline}</span>
-            </div>
-            <button class="icon-btn drawer-close-btn" id="mobile-drawer-close" aria-label="Close menu">
-              <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-
-          <div class="drawer-body">
-            <ul class="drawer-nav-list">
-              ${navItemsMobile}
-            </ul>
-          </div>
-
-          <div class="drawer-footer">
-            <div class="drawer-support-box">
-              <span class="support-label">Customer Concierge:</span>
-              <a href="tel:${STORE_META.supportNumber.replace(/\s+/g, '')}" class="support-phone">${STORE_META.supportNumber}</a>
-            </div>
-            <p class="drawer-copyright">© ${new Date().getFullYear()} ${STORE_META.brandName}</p>
-          </div>
-
-        </div>
-      </aside>
-    `;
-  }
-
-  /**
-   * Initializes functional interactions, events, and lifecycle hooks
-   */
-  function initHeaderLogic() {
-    const mainHeader = document.getElementById('site-main-header');
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const menuClose = document.getElementById('mobile-drawer-close');
-    const drawer = document.getElementById('mobile-drawer');
-    const overlay = document.getElementById('mobile-drawer-overlay');
-    const cartBtn = document.getElementById('header-cart-btn');
-    const cartCountBadge = document.getElementById('header-cart-count');
-
-    // 1. Mobile Drawer Control Logic
-    function openDrawer() {
-      drawer.classList.add('is-open');
-      overlay.classList.add('is-visible');
-      drawer.setAttribute('aria-hidden', 'false');
-      menuToggle.setAttribute('aria-expanded', 'true');
-      document.body.classList.add('no-scroll');
-    }
-
-    function closeDrawer() {
-      drawer.classList.remove('is-open');
-      overlay.classList.remove('is-visible');
-      drawer.setAttribute('aria-hidden', 'true');
-      menuToggle.setAttribute('aria-expanded', 'false');
-      document.body.classList.remove('no-scroll');
-    }
-
-    if (menuToggle) menuToggle.addEventListener('click', openDrawer);
-    if (menuClose) menuClose.addEventListener('click', closeDrawer);
-    if (overlay) overlay.addEventListener('click', closeDrawer);
-
-    // Close on ESC key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-        closeDrawer();
-      }
+  // 3. Logout Handler
+  const logoutBtn = document.getElementById('sig-logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('signature_customer');
+      window.location.reload();
     });
-
-    // Close drawer when any nav link is tapped
-    const mobileLinks = drawer.querySelectorAll('.drawer-nav-link');
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', closeDrawer);
-    });
-
-    // 2. Sticky Navbar Glassmorphism on Scroll
-    let lastScrollY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll > 40) {
-        mainHeader.classList.add('header-scrolled');
-      } else {
-        mainHeader.classList.remove('header-scrolled');
-      }
-      lastScrollY = currentScroll;
-    }, { passive: true });
-
-    // 3. Cart Trigger Integration (Dispatches custom event to cart.js)
-    if (cartBtn) {
-      cartBtn.addEventListener('click', () => {
-        window.dispatchEvent(new CustomEvent('toggle-cart-drawer'));
-      });
-    }
-
-    // 4. Global API for cart.js to update the item badge count
-    window.updateHeaderCartCount = function (count) {
-      if (!cartCountBadge) return;
-      const parsedCount = parseInt(count, 10) || 0;
-      cartCountBadge.textContent = parsedCount;
-      if (parsedCount > 0) {
-        cartCountBadge.classList.add('has-items');
-      } else {
-        cartCountBadge.classList.remove('has-items');
-      }
-    };
   }
 
-  /**
-   * Mount function called on DOM Ready
-   */
-  function mountHeader() {
-    const container = document.getElementById('header-container');
-    if (!container) {
-      console.error('[header.js] Target element "#header-container" not found.');
-      return;
-    }
-    container.innerHTML = createHeaderTemplate();
-    initHeaderLogic();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountHeader);
-  } else {
-    mountHeader();
-  }
-
+  // 4. Cart Count Badge Updater
+  try {
+    const cart = JSON.parse(localStorage.getItem('signature_cart') || '[]');
+    const totalQty = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const badge = document.getElementById('cart-count-badge');
+    if (badge) badge.textContent = totalQty;
+  } catch (err) {}
 })();
