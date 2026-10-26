@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Signature Look</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    body {
+      background-color: var(--color-bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .auth-page-container {
+      flex: 1 0 auto;
+      padding: 50px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .auth-card {
+      max-width: 620px;
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 40px 32px;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .auth-title {
+      font-family: var(--font-serif);
+      font-size: 2.1rem;
+      color: var(--color-primary);
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+
+    .auth-subtitle {
+      font-size: 0.84rem;
+      color: var(--color-text-muted);
+      line-height: 1.5;
+    }
+
+    .auth-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .col-full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-main);
+    }
+
+    .form-control {
+      padding: 12px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(18, 34, 27, 0.08);
+    }
+
+    .auth-submit-btn {
+      width: 100%;
+      background-color: var(--color-primary);
+      color: #FFFFFF;
+      padding: 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.25s ease, transform 0.15s ease;
+    }
+
+    .auth-submit-btn:hover {
+      background-color: var(--color-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .auth-submit-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .auth-footer-link {
+      text-align: center;
+      margin-top: 22px;
+      font-size: 0.84rem;
+      color: var(--color-text-muted);
+    }
+
+    .auth-footer-link a {
+      color: var(--color-accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .toast-status {
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .toast-status.success {
+      background-color: #E8F5E9;
+      color: #2E7D32;
+      border: 1px solid #A5D6A7;
+    }
+
+    .toast-status.error {
+      background-color: #FFEBEE;
+      color: #C62828;
+      border: 1px solid #EF9A9A;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Boutique Shared Header -->
+  <div id="header-container"></div>
+
+  <!-- Registration Form Content -->
+  <main class="auth-page-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <span class="auth-kicker">Join The Signature Circle</span>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Register to unlock seamless checkout, order tracking, and bespoke tailoring services.</p>
+      </div>
+
+      <div id="toast-message" class="toast-status"></div>
+
+      <form id="register-form">
+        <div class="auth-form-grid">
+          
+          <div class="form-group col-full">
+            <label for="reg-fullname">Full Name *</label>
+            <input type="text" id="reg-fullname" class="form-control" placeholder="e.g. Fatima Khan" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-phone">WhatsApp Mobile *</label>
+            <input type="tel" id="reg-phone" class="form-control" placeholder="10-digit number" pattern="[0-9]{10}" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email Address *</label>
+            <input type="email" id="reg-email" class="form-control" placeholder="name@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password *</label>
+            <input type="password" id="reg-password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-confirm-password">Confirm Password *</label>
+            <input type="password" id="reg-confirm-password" class="form-control" placeholder="Re-enter password" minlength="6" required />
+          </div>
+
+          <div class="form-group col-full">
+            <label for="reg-address">Default Delivery Address *</label>
+            <input type="text" id="reg-address" class="form-control" placeholder="House / Flat No., Mohalla, Landmark" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-city">City *</label>
+            <input type="text" id="reg-city" class="form-control" placeholder="e.g. Shahjahanpur" required />
+          </div>
+
+          <div class="form-group">
+            <label for="reg-pincode">Pincode *</label>
+            <input type="text" id="reg-pincode" class="form-control" placeholder="6-digit PIN" pattern="[0-9]{6}" required />
+          </div>
+
+          <div class="form-group col-full">
+            <button type="submit" class="auth-submit-btn" id="register-btn">
+              Create My Account
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+      <div class="auth-footer-link">
+        Already have an account? <a href="login.html">Sign In Here</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Boutique Shared Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Shared Component Scripts -->
+  <script src="js/header.js"></script>
+  <script src="js/footer.js"></script>
+
+  <!-- Registration Logic -->
+  <script>
+    // GOOGLE APPS SCRIPT WEB APP URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXt-5t6qmCF1d8CN-EIBgBZ6_HTJdgRKAnpOVkra8CuHicjq5gS-DQ1WT-_dEYE1Ui/exec';
+
+    const form = document.getElementById('register-form');
+    const submitBtn = document.getElementById('register-btn');
+    const toast = document.getElementById('toast-message');
+
+    function showToast(msg, isSuccess = true) {
+      toast.textContent = msg;
+      toast.className = 'toast-status ' + (isSuccess ? 'success' : 'error');
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 5000);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-confirm-password').value;
+
+      if (password !== confirmPassword) {
+        showToast('Passwords do not match. Please verify.', false);
+        return;
+      }
+
+      const payload = {
+        action: 'register_customer',
+        fullName: document.getElementById('reg-fullname').value.trim(),
+        phone: document.getElementById('reg-phone').value.trim(),
+        email: document.getElementById('reg-email').value.trim(),
+        password: password,
+        address: document.getElementById('reg-address').value.trim(),
+        city: document.getElementById('reg-city').value.trim(),
+        pincode: document.getElementById('reg-pincode').value.trim()
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Registering Account...';
+
+      try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result && result.status === 'success') {
+          showToast('Account created successfully! Redirecting...', true);
+          
+          // Save customer info into localStorage for instant session
+          if (result.customer) {
+            localStorage.setItem('signature_customer', JSON.stringify(result.customer));
+          }
+
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
+
+        } else {
+          showToast(result.message || 'Registration failed. Try again.', false);
+        }
+      } catch (err) {
+        showToast('Network error: ' + err.message, false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create My Account';
+      }
+    });
+  </script>
+</body>
+</html>
